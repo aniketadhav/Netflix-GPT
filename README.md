@@ -11,6 +11,7 @@
 
 - Browse
     - Header
+    - Login/Signup Form
     - Main Movie
         - Trailer in background
         - Title &  Description
@@ -21,4 +22,4 @@
     - Search Bar
     - Movie Suggestions
 
-# 03:23:00
+# 02:33:00
