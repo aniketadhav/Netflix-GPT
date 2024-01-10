@@ -1,10 +1,9 @@
-
-import './App.css';
+import Body from "./components/Body";
 
 function App() {
   return (
-    <div className="text-2xl font-bold text-red-600">
-     Hello React  2
+    <div>
+      <Body />
     </div>
   );
 }
