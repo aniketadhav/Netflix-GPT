@@ -7,6 +7,10 @@ const Login = () => {
     setIsSignInForm(!isSignInForm);
   };
   
+  const handleButtonClick=() => {
+    //Validate the From data;
+    
+  }
   
   return (
     <div>
@@ -46,6 +50,7 @@ const Login = () => {
           type="submit"
           className="p-4 my-4 bg-red-700 w-full rounded"
           name=""
+          onClick={handleButtonClick}
         >
           {isSignInForm ? "Sign In" : "Sign Up"}
         </button>
