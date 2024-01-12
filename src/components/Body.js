@@ -6,6 +6,10 @@ import Browse from './Browse';
 const Body = () => {
     const appRouter = createBrowserRouter([
         {
+          path: "/",
+          element: <Login />,
+        },
+        {
           path: "/login",
           element: <Login />,
         },
