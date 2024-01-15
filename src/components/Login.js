@@ -1,22 +1,80 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidData } from "../utils/validation";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
+  const dispatch = useDispatch();
   const toggleSignInForm = () => {
     setIsSignInForm(!isSignInForm);
   };
   const [errorMsg, seterrorMsg] = useState(null);
+  const [successMsg, setsuccessMsg] = useState(null);
   const email = useRef(null);
   const password = useRef(null);
   const fullName = useRef(null);
 
   const handleButtonClick = () => {
     //Validate the From data;
-    const msg = checkValidData(email?.current?.value, password?.current?.value, fullName?.current?.value);
+    const msg = checkValidData(email?.current?.value, password?.current?.value,fullName?.current?.value);
+    console.log("===?",
+      email?.current?.value,
+      password?.current?.value,
+      fullName?.current?.value
+    );
     seterrorMsg(msg);
-    console.log("msg", msg);
+    console.log("msg", !msg, !isSignInForm);
+
+    if (!isSignInForm && !msg && !localStorage.getItem(email?.current?.value)) {
+      let data = {
+        email: email?.current?.value,
+        password: password?.current?.value,
+        fullName: fullName?.current?.value,
+      };
+      localStorage.setItem(email?.current?.value, JSON.stringify(data));
+      console.log("localStorage", localStorage.getItem(email?.current?.value));
+      
+      dispatch(addUser({
+        email : email?.current.value,
+        password: password?.current?.value
+
+      }))
+
+
+
+
+      if (localStorage.getItem(email?.current?.value)) {
+        setsuccessMsg("Registration successful");
+        email.current.value = null;
+        password.current.value = null;
+        fullName.current.value = null;
+        setIsSignInForm(!isSignInForm);
+        setTimeout(() => {
+          setsuccessMsg(null)
+        }, 2000);
+      }
+    }
+    if (
+      password?.current?.value &&
+      email?.current?.value &&
+      localStorage.getItem(email?.current?.value)
+    ) {
+      let validdata = localStorage.getItem(email?.current?.value);
+      // console.log(validdata?.email==email?.current?.value, validdata?.password==password?.current?.value)
+      if(validdata?.email===email?.current?.value && validdata?.password===password?.current?.value){
+        setsuccessMsg("login successful");
+        email.current.value = null;
+        password.current.value = null;
+        fullName.current.value = null;
+        setIsSignInForm(!isSignInForm);
+        setTimeout(() => {
+          setsuccessMsg(null)
+        }, 2000);
+      }
+      console.log("validdata", validdata);
+    }
   };
 
   return (
@@ -59,6 +117,7 @@ const Login = () => {
           className="p-4 my-4 w-full bg-gray-600"
         />
         <p className="text-red-500 font-bold text-lg py-2"> {errorMsg}</p>
+        <p className="text-green-500 font-bold text-lg py-2"> {successMsg}</p>
         <button
           type="submit"
           className="p-4 my-4 bg-red-700 w-full rounded"
